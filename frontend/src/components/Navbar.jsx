@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import NavLogo from "../assets/Attire.png";
+import NavLogo from "../assets/Imperial-Logo.png";
 
 export default function Navbar() {
   return (

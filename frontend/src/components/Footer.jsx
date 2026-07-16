@@ -1,5 +1,5 @@
 import React from "react";
-import FooterLogo from "../assets/Attire.png"
+import FooterLogo from "../assets/Imperial-Logo.png"
 import {
   FaFacebookF,
   FaInstagram,
@@ -21,7 +21,7 @@ export default function Footer() {
           <img src={FooterLogo} alt="Logo" className="w-36 mb-4" />
 
           <p className="text-gray-400 leading-7">
-            Attire Car Rental provides premium, affordable, and reliable
+            Imperial Car Rental provides premium, affordable, and reliable
             vehicles for business trips, vacations, and daily commuting.
           </p>
 
@@ -121,7 +121,7 @@ export default function Footer() {
 
             <div className="flex items-center gap-3">
               <FaEnvelope className="text-sky-500" />
-              <span>support@attirecars.com</span>
+              <span>support@imperialcars.com</span>
             </div>
 
             <div className="flex items-start gap-3">
@@ -137,7 +137,7 @@ export default function Footer() {
       <hr className="border-slate-700" />
 
       <div className="text-center py-6 text-gray-400 text-sm">
-        © {new Date().getFullYear()} Attire Car Rental. All Rights Reserved.
+        © {new Date().getFullYear()} Imperial Car Rental. All Rights Reserved.
       </div>
 
     </footer>

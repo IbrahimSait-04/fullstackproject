@@ -119,7 +119,7 @@ export default function Home() {
       <section className="max-w-7xl mx-auto py-20 px-6">
 
         <h2 className="text-4xl font-bold text-center">
-          Why Choose Attire Rentals
+          Why Choose Imperial Rentals
         </h2>
 
         <p className="text-center text-gray-500 mt-4">

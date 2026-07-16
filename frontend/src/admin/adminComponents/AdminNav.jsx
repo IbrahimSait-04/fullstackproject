@@ -1,5 +1,5 @@
 import React from "react";
-import NavLogo from "../../assets/Attire.png";
+import NavLogo from "../../assets/Imperial-Logo.png";
 import { Link } from "react-router-dom";
 
 export default function AdminNav() {

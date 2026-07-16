@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Logo from "../assets/Attire-Logo.png";
+import Logo from "../assets/Imperial-Logo.png";
 import titleimg from "../assets/title_img.png";
 
 export default function Login() {
