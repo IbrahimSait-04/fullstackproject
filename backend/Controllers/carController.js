@@ -4,6 +4,7 @@ const User = require("../Models/userSchema");
 const bcrypt = require("bcryptjs");
 const Admin = require("../Models/adminModel");
 const Car = require("../Models/carSchema");
+const Rental = require("../Models/rentalModel");
 const JWT_SECRET = "Knight*58410";
 
 const createCar = async (req, res) => {
@@ -54,14 +55,47 @@ const updateCar = async (req, res) => {
       updatedCar.img = img;
     }
 
-    const car =await Car.findByIdAndUpdate(id, updatedCar, { new: true });
+    const car = await Car.findByIdAndUpdate(id, updatedCar, { new: true });
     if (!car) {
       return res.status(404).send("Car Not Found");
     }
     res.status(200).send("Car Updated Successfully");
   } catch (error) {
     console.log(error);
-    
+  }
+};
+
+const deleteCar = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const booked = await Rental.findOne({
+      car: id,
+      status: "Booked",
+    });
+
+    if (booked) {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot Delete An Ongoing Rental Car",
+      });
+    }
+
+    const car = await Car.findByIdAndDelete(id);
+
+    if (!car) {
+      return res.status(404).json({
+        success: false,
+        message: "Car Not Found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "Car Deleted Successfully",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send("Internal Server Error");
   }
 };
 
@@ -69,4 +103,5 @@ module.exports = {
   createCar,
   getCar,
   updateCar,
+  deleteCar,
 };

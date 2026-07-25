@@ -3,6 +3,8 @@ const jwt = require("jsonwebtoken");
 const User = require("../Models/userSchema");
 const bcrypt = require("bcryptjs");
 const Admin = require("../Models/adminModel");
+
+
 const JWT_SECRET = "Knight*58410";
 
 const adminRegister = async (req, res) => {
@@ -50,14 +52,14 @@ const adminLogin = async (req, res) => {
     if (!isPassMatch) {
       return res.status(401).send("Password Doesnt Match");
     }
-    const authToken = await jwt.sign({ adminId: admin._id }, JWT_SECRET, {
+    const adminToken = await jwt.sign({ adminId: admin._id }, JWT_SECRET, {
       expiresIn: "1d",
     });
-    console.log(authToken);
+    console.log(adminToken);
     res.status(200).json({
       message: "Login Success",
       success: true,
-      authToken,
+      adminToken,
       admin,
     });
   } catch (error) {
@@ -69,8 +71,14 @@ const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!User) {
+    if (!user) {
       return res.status(404).send("User Not Found");
+    }
+    if(user.ban){
+      return res.status(403).json({
+        success:false,
+        message:"Your Account Has Been Banned By Admin"
+      })
     }
     const isPwdMatch = await bcrypt.compare(password, user.password);
     console.log(isPwdMatch);

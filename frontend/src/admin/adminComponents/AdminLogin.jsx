@@ -25,7 +25,7 @@ export default function AdminLogin() {
       console.log(res.data);
 
       if (res.data.success) {
-        localStorage.setItem("token", res.data.authToken);
+        localStorage.setItem("adminToken", res.data.adminToken);
         localStorage.setItem("admin", JSON.stringify(res.data.admin));
         nav("/adminhome");
       } else {

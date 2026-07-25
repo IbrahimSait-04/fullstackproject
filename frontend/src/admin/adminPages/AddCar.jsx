@@ -10,6 +10,8 @@ export default function AddCar({ selectedCar, setSelectedCar }) {
 
   const [car, setCar] = useState([]);
 
+  const adminToken = localStorage.getItem("adminToken");
+
   useEffect(() => {
     fetchCars();
   }, []);
@@ -49,19 +51,26 @@ export default function AddCar({ selectedCar, setSelectedCar }) {
         res = await axios.put(
           `http://localhost:5000/api/car/update/${selectedCar._id}`,
           formData,
+          {
+            headers: {
+              authorization: `Bearer ${adminToken}`,
+            },
+          },
         );
         alert("Car Updated Succesfully");
       } else {
         res = await axios.post(
           "http://localhost:5000/api/car/create",
           formData,
+          {
+            headers: {
+              authorization: `Bearer ${adminToken}`,
+            },
+          },
         );
         alert("Car Added Suucesfully");
       }
-
       console.log(res.data);
-
-      alert("Car Added Succesfullly");
 
       setImg(null);
       setCarName("");

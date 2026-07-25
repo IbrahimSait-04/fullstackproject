@@ -7,6 +7,8 @@ const mongoose = require("mongoose")
 const ConnectDB = require("./config/db")
 const authRoutes= require("./Routes/authRoutes")
 const carRoutes = require("./Routes/carRoutes")
+const rentalRoutes = require("./Routes/rentalRoutes")
+const paymentRoutes = require("./Routes/paymentRoute")
 
 
 
@@ -21,7 +23,8 @@ app.use(cors())
 app.use(express.json())
 app.use("/api",authRoutes)
 app.use("/api/car",carRoutes)
-
+app.use("/api/rentals", rentalRoutes)
+app.use("/api/payment",paymentRoutes)
 
 
 

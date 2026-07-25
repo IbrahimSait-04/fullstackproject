@@ -4,19 +4,42 @@ import React, { useEffect, useState } from "react";
 export default function CarList({ setSelectedCar }) {
   const [car, setCar] = useState([]);
 
+  const adminToken = localStorage.getItem("adminToken")
+
   useEffect(() => {
     fetchCars();
   }, []);
 
   const fetchCars = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/car/getCars");
+      const res = await axios.get("http://localhost:5000/api/car/getCars",);
       setCar(res.data);
       console.log(res.data);
     } catch (error) {
       console.log(error);
     }
   };
+
+
+  const handleDelete = async (id)=>{
+    try {
+      const res = await axios.delete(`http://localhost:5000/api/car/delete/${id}`,{
+        headers:{
+          authorization: `Bearer ${adminToken}`
+        }
+      }
+      );
+      fetchCars();
+      return alert("Deleted Sucessfully")
+      
+    } catch (error) {
+      if(error.response && error.response.status===400){
+        alert("Ongoing Rental Cant Be Deleted")
+      }
+      console.log(error);
+    }
+
+  }
   return (
     <div className="max-w-7xl mx-auto p-8">
       <h1 className="text-3xl font-bold text-center mb-8">Available Cars</h1>
@@ -54,7 +77,7 @@ export default function CarList({ setSelectedCar }) {
                   Edit
                 </button>
 
-                <button className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg font-semibold transition">
+                <button onClick={()=> handleDelete(c._id)} className="bg-red-500 hover:bg-red-600 text-white px-5 py-2 rounded-lg font-semibold transition">
                   Delete
                 </button>
               </div>

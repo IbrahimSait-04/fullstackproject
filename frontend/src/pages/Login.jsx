@@ -32,8 +32,15 @@ export default function Login() {
         alert("Invalid Credentials");
       }
     } catch (error) {
-      console.log(error);
-      alert("Something went wrong");
+      if(error.response?.status === 403){
+        alert ("Your Account Has Been Banned By Admin")
+      }
+      else if(error.response?.status === 401){
+        alert ("Invalid Email or password")
+      }
+      else{
+        alert("Something Went Wrong")
+      }
     }
   }
 
