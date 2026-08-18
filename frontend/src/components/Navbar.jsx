@@ -1,17 +1,10 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import NavLogo from "../assets/Imperial-Logo.png";
 
 export default function Navbar() {
-  const nav = useNavigate();
 
   const token = localStorage.getItem("token");
-
-  const handleLogOut = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    nav("/");
-  };
 
   return (
     <div className="flex justify-between p-6 bg-slate-600">

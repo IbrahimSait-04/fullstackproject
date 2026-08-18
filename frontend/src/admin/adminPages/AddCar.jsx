@@ -1,37 +1,21 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-export default function AddCar({ selectedCar, setSelectedCar }) {
+export default function AddCar({ selectedCar }) {
   const [img, setImg] = useState(null);
   const [carName, setCarName] = useState("");
   const [carPrice, setCarPrice] = useState("");
   const [description, setDescription] = useState("");
   const [regNo, setRegNo] = useState("");
-  const [rc,setRc]=useState("");
-  const [puc,setPuc]=useState("");
-
-  const [car, setCar] = useState([]);
+  const [rc, setRc] = useState("");
+  const [puc, setPuc] = useState("");
 
   const adminToken = localStorage.getItem("adminToken");
 
   const formatDate = (date) => {
-  if (!date) return "";
+    if (!date) return "";
 
-  return new Date(date).toISOString().split("T")[0];
-};
-
-  useEffect(() => {
-    fetchCars();
-  }, []);
-
-  const fetchCars = async () => {
-    try {
-      const res = await axios.get("http://localhost:5000/api/car/getCars");
-      setCar(res.data);
-      console.log(res.data);
-    } catch (error) {
-      console.log(error);
-    }
+    return new Date(date).toISOString().split("T")[0];
   };
 
   useEffect(() => {
@@ -45,12 +29,15 @@ export default function AddCar({ selectedCar, setSelectedCar }) {
     }
   }, [selectedCar]);
 
+  
   async function handleAddCar(e) {
     e.preventDefault();
 
     try {
       const formData = new FormData();
-      formData.append("img", img);
+      if (img) {
+        formData.append("img", img);
+      }
       formData.append("carName", carName);
       formData.append("carPrice", carPrice);
       formData.append("description", description);
@@ -91,7 +78,6 @@ export default function AddCar({ selectedCar, setSelectedCar }) {
       setRegNo("");
       setRc("");
       setPuc("");
-      
     } catch (error) {
       console.log(error);
     }
@@ -179,9 +165,7 @@ export default function AddCar({ selectedCar, setSelectedCar }) {
         </div>
 
         <div>
-          <label className="block mb-2 font-semibold">
-            PUC Validity
-          </label>
+          <label className="block mb-2 font-semibold">PUC Validity</label>
 
           <input
             type="text"

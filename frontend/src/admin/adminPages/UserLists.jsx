@@ -1,34 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import AdminNav from "../adminComponents/AdminNav";
 
 export default function UserLists() {
   const adminToken = localStorage.getItem("adminToken");
-
+  
   const [user, setUser] = useState([]);
 
-  const handleBan = async (id) => {
-    try {
-      await axios.put(
-        `http://localhost:5000/api/toggleBan/${id}`,
-        {},
-        {
-          headers: {
-            authorization: `Bearer ${adminToken}`,
-          },
-        },
-      );
-      fetchUsers();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  const fetchUsers = async () => {
+  const fetchUsers =useCallback( async () => {
     try {
       const res = await axios.get("http://localhost:5000/api/admin/getusers", {
         headers: {
@@ -39,7 +18,33 @@ export default function UserLists() {
     } catch (error) {
       console.log(error);
     }
-  };
+  },[adminToken]);
+
+  //To Fetch User When Component Loads
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  const handleBan = useCallback(
+    async (id) => {
+      try {
+        await axios.put(
+          `http://localhost:5000/api/toggleBan/${id}`,
+          {},
+          {
+            headers: {
+              authorization: `Bearer ${adminToken}`,
+            },
+          },
+        );
+        fetchUsers();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [adminToken, fetchUsers],
+  );
+
 
   return (
     <div>

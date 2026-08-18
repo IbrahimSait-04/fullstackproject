@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useCallback,  useEffect, useState } from "react";
 import axios from "axios";
 
 export default function LicenseVerification() {
@@ -6,11 +6,8 @@ export default function LicenseVerification() {
 
   const adminToken = localStorage.getItem("adminToken");
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
 
-  const fetchUsers = async () => {
+  const fetchUsers =useCallback( async () => {
     try {
       const res = await axios.get(
         "http://localhost:5000/api/admin/getusers",
@@ -25,7 +22,11 @@ export default function LicenseVerification() {
     } catch (error) {
       console.log(error);
     }
-  };
+  },[adminToken]);
+
+    useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
 
   const updateLicenseStatus = async (id, status) => {
     try {

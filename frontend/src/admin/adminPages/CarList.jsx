@@ -22,14 +22,11 @@ export default function CarList({ setSelectedCar }) {
 
   const handleDelete = async (id) => {
     try {
-      const res = await axios.delete(
-        `http://localhost:5000/api/car/delete/${id}`,
-        {
-          headers: {
-            authorization: `Bearer ${adminToken}`,
-          },
+      await axios.delete(`http://localhost:5000/api/car/delete/${id}`, {
+        headers: {
+          authorization: `Bearer ${adminToken}`,
         },
-      );
+      });
       fetchCars();
       return alert("Deleted Sucessfully");
     } catch (error) {
@@ -144,13 +141,13 @@ export default function CarList({ setSelectedCar }) {
                 <div className="mt-4 min-h-[56px]">
                   {pucStatus.status === "Expired" && (
                     <div className="p-3 rounded-xl bg-red-100 text-red-700 font-semibold text-sm">
-                       {pucStatus.message}
+                      {pucStatus.message}
                     </div>
                   )}
 
                   {pucStatus.status === "Warning" && (
                     <div className="p-3 rounded-xl bg-yellow-100 text-yellow-700 font-semibold text-sm">
-                       {pucStatus.message}
+                      {pucStatus.message}
                     </div>
                   )}
                 </div>

@@ -4,43 +4,42 @@ import Navbar from "../components/Navbar";
 
 export default function MyBooking() {
   const authToken = localStorage.getItem("token");
-  const [car, setCar] = useState([]);
   const [rentals, setRentals] = useState([]);
 
   useEffect(() => {
-    localStorage.getItem("user");
-    fetchCars();
-  }, []);
+    const fetchCars = async () => {
+      try {
+        const user = JSON.parse(localStorage.getItem("user"));
 
-  const fetchCars = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-
-      const res = await axios.get(
-        `http://localhost:5000/api/rentals/myrentals/${user._id}`,
-        {
-          headers: {
-            authorization: `Bearer ${authToken}`,
+        const res = await axios.get(
+          `http://localhost:5000/api/rentals/myrentals/${user._id}`,
+          {
+            headers: {
+              authorization: `Bearer ${authToken}`,
+            },
           },
-        },
-      );
+        );
 
-      const sortedRentals = [...res.data].sort((a, b) => {
-        const order = {
-          Booked: 1,
-          "Pending Return": 2,
-          Returned: 3,
-          Cancelled: 4,
-        };
+        const sortedRentals = [...res.data].sort((a, b) => {
+          const order = {
+            Booked: 1,
+            "Pending Return": 2,
+            Returned: 3,
+            Cancelled: 4,
+          };
 
-        return order[a.status] - order[b.status];
-      });
+          return order[a.status] - order[b.status];
+        });
 
-      setRentals(sortedRentals);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+        setRentals(sortedRentals);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchCars();
+  }, [authToken]);
+
   const cancelBooking = async (id) => {
     try {
       const res = await axios.put(
@@ -55,7 +54,30 @@ export default function MyBooking() {
 
       alert(res.data.message);
 
-      fetchCars();
+      // Refresh bookings after cancellation
+      const user = JSON.parse(localStorage.getItem("user"));
+
+      const response = await axios.get(
+        `http://localhost:5000/api/rentals/myrentals/${user._id}`,
+        {
+          headers: {
+            authorization: `Bearer ${authToken}`,
+          },
+        },
+      );
+
+      const sortedRentals = [...response.data].sort((a, b) => {
+        const order = {
+          Booked: 1,
+          "Pending Return": 2,
+          Returned: 3,
+          Cancelled: 4,
+        };
+
+        return order[a.status] - order[b.status];
+      });
+
+      setRentals(sortedRentals);
     } catch (error) {
       console.log(error);
       alert(error.response?.data || "Something went wrong");

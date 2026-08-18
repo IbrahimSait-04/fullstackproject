@@ -25,33 +25,33 @@ export default function Footer() {
           </p>
 
           <div className="flex gap-4 mt-6">
-            <a
-              href="#"
+            <button
+              type="button"
               className="bg-sky-600 hover:bg-sky-700 p-3 rounded-full duration-300"
             >
               <FaFacebookF />
-            </a>
+            </button>
 
-            <a
-              href="#"
+            <button
+              type="button"
               className="bg-sky-600 hover:bg-sky-700 p-3 rounded-full duration-300"
             >
               <FaInstagram />
-            </a>
+            </button>
 
-            <a
-              href="#"
+            <button
+              type="button"
               className="bg-sky-600 hover:bg-sky-700 p-3 rounded-full duration-300"
             >
               <FaTwitter />
-            </a>
+            </button>
 
-            <a
-              href="#"
+            <button
+              type="button"
               className="bg-sky-600 hover:bg-sky-700 p-3 rounded-full duration-300"
             >
               <FaLinkedinIn />
-            </a>
+            </button>
           </div>
         </div>
 
@@ -76,11 +76,15 @@ export default function Footer() {
             </li>
 
             <li>
-              <Link to={"/about"} className="hover:text-white cursor-pointer">About Us</Link>
+              <Link to={"/about"} className="hover:text-white cursor-pointer">
+                About Us
+              </Link>
             </li>
 
             <li>
-              <Link to={"/contact"} className="hover:text-white cursor-pointer">Contact</Link>
+              <Link to={"/contact"} className="hover:text-white cursor-pointer">
+                Contact
+              </Link>
             </li>
           </ul>
         </div>

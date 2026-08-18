@@ -1,16 +1,12 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AdminNav from "../adminComponents/AdminNav";
 
 export default function AllBookings() {
   const adminToken = localStorage.getItem("adminToken");
   const [rent, setRent] = useState([]);
 
-  useEffect(() => {
-    fetchBookings();
-  }, []);
-
-  const fetchBookings = async () => {
+  const fetchBookings = useCallback(async () => {
     try {
       const res = await axios.get(
         "http://localhost:5000/api/rentals/allbookings",
@@ -24,8 +20,11 @@ export default function AllBookings() {
     } catch (error) {
       console.log(error);
     }
-  };
+  }, [adminToken]);
 
+  useEffect(() => {
+    fetchBookings();
+  }, [fetchBookings]);
   const cancelBooking = async (id) => {
     const confirmed = window.confirm(
       "Are you sure you want to cancel this booking?",

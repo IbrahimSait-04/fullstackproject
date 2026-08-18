@@ -7,7 +7,6 @@ import AdminHome from "./admin/adminPages/AdminHome";
 import UserLists from "./admin/adminPages/UserLists";
 import AdminLogin from "./admin/adminComponents/AdminLogin";
 import AddCar from "./admin/adminPages/AddCar";
-import CarList from "./admin/adminPages/CarList";
 import MyBooking from "./pages/MyBooking";
 import AllBookings from "./admin/adminPages/AllBookings";
 import ForgotPass from "./pages/ForgotPass";
