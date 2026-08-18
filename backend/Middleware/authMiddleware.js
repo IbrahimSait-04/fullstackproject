@@ -24,6 +24,10 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
+console.log("JWT SECRET EXISTS:", !!process.env.JWT_SECRET);
+console.log("AUTH HEADER EXISTS:", !!req.headers.authorization);
+
+
 const adminMiddleware = async (req, res, next) => {
   try {
     let adminToken = req.headers.authorization;
