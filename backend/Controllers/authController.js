@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const Admin = require("../Models/adminModel");
 const transporter = require("../config/nodeMailer");
 
-const JWT_SECRET = "Knight*58410";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const adminRegister = async (req, res) => {
   try {
