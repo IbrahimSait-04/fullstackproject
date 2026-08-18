@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 
 const API_URL =
-  process.env.NODE_ENV === "production" ? "" : "${API_URL}";
+  process.env.NODE_ENV === "production" ? "" :  "http://localhost:5000";
 
 export default function Profile() {
   const [user, setUser] = useState(null);

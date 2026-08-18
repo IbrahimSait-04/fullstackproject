@@ -5,7 +5,7 @@ import Logo from "../assets/Imperial-Logo.png";
 import titleimg from "../assets/title_img.png";
 
 const API_URL =
-  process.env.NODE_ENV === "production" ? "" : "${API_URL}";
+  process.env.NODE_ENV === "production" ? "" :  "http://localhost:5000";
 
 export default function Register() {
   const nav = useNavigate();

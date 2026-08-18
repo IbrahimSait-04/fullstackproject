@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 const API_URL =
-  process.env.NODE_ENV === "production" ? "" : "${API_URL}";
+  process.env.NODE_ENV === "production" ? "" :  "http://localhost:5000";
 
 export default function AddLicense() {
   const [license, setLicense] = useState("");
