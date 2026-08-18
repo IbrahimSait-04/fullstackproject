@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 
+const API_URL =
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+
 export default function MyBooking() {
   const authToken = localStorage.getItem("token");
   const [rentals, setRentals] = useState([]);
@@ -12,7 +15,7 @@ export default function MyBooking() {
         const user = JSON.parse(localStorage.getItem("user"));
 
         const res = await axios.get(
-          `http://localhost:5000/api/rentals/myrentals/${user._id}`,
+          `${API_URL}/api/rentals/myrentals/${user._id}`,
           {
             headers: {
               authorization: `Bearer ${authToken}`,
@@ -43,7 +46,7 @@ export default function MyBooking() {
   const cancelBooking = async (id) => {
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/rentals/cancel-booking/${id}`,
+        `${API_URL}/api/rentals/cancel-booking/${id}`,
         {},
         {
           headers: {
@@ -58,7 +61,7 @@ export default function MyBooking() {
       const user = JSON.parse(localStorage.getItem("user"));
 
       const response = await axios.get(
-        `http://localhost:5000/api/rentals/myrentals/${user._id}`,
+        `${API_URL}/api/rentals/myrentals/${user._id}`,
         {
           headers: {
             authorization: `Bearer ${authToken}`,

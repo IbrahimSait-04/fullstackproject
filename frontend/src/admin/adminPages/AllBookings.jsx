@@ -2,6 +2,10 @@ import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import AdminNav from "../adminComponents/AdminNav";
 
+
+const API_URL =
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+
 export default function AllBookings() {
   const adminToken = localStorage.getItem("adminToken");
   const [rent, setRent] = useState([]);
@@ -9,7 +13,7 @@ export default function AllBookings() {
   const fetchBookings = useCallback(async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/rentals/allbookings",
+        `${API_URL}/api/rentals/allbookings`,
         {
           headers: {
             authorization: `bearer ${adminToken}`,
@@ -34,7 +38,7 @@ export default function AllBookings() {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/rentals/cancel-booking/${id}`,
+        `${API_URL}/api/rentals/cancel-booking/${id}`,
         {},
         {
           headers: {
@@ -59,7 +63,7 @@ export default function AllBookings() {
 
     try {
       await axios.put(
-        `http://localhost:5000/api/rentals/confirm-return/${id}`,
+        `${API_URL}/api/rentals/confirm-return/${id}`,
         {},
         {
           headers: {
@@ -79,7 +83,7 @@ export default function AllBookings() {
   const updateRefundStatus = async (id, refundStatus) => {
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/rentals/update-refund/${id}`,
+        `${API_URL}/api/rentals/update-refund/${id}`,
         {
           refundStatus,
         },

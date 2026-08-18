@@ -3,6 +3,9 @@ import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import axios from "axios";
 
+const API_URL =
+  process.env.NODE_ENV === "production" ? "" : "${API_URL}";
+
 export default function Profile() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -19,7 +22,7 @@ export default function Profile() {
           return;
         }
 
-        const res = await axios.get("http://localhost:5000/api/user/profile", {
+        const res = await axios.get(`${API_URL}/api/user/profile`, {
           headers: {
             authorization: `Bearer ${token}`,
           },

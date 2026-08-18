@@ -5,6 +5,9 @@ import titleimg from "../assets/title_img.png";
 import Footer from "../components/Footer";
 import axios from "axios";
 
+const API_URL =
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+
 export default function Home() {
   const token = localStorage.getItem("token");
   const [cars, setCars] = useState([]);
@@ -18,7 +21,7 @@ export default function Home() {
   useEffect(() => {
     const fetchCars = async (req, res) => {
       try {
-        const res = await axios.get("http://localhost:5000/api/car/getCars");
+        const res = await axios.get(`${API_URL}/api/car/getCars`);
         setCars(res.data);
       } catch (error) {
         console.log(error);
@@ -37,7 +40,7 @@ export default function Home() {
         return;
       }
       const res = await axios.post(
-        "http://localhost:5000/api/rentals/availablecars",
+        `${API_URL}/api/rentals/availablecars`,
         { pickupDate, returnDate },
         {
           headers: {
@@ -57,35 +60,32 @@ export default function Home() {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
 
-      if(!user){
-        alert("Please Login To Continue")
+      if (!user) {
+        alert("Please Login To Continue");
         return;
       }
 
-
-      if(!user.license){
+      if (!user.license) {
         alert("Please Add Your Driving License Before Booking");
         nav("/license");
         return;
       }
 
-
-      if(user.licenseStatus === "Pending"){
+      if (user.licenseStatus === "Pending") {
         alert("Your Driving License Is Waiting For Admins Approval");
         return;
       }
 
-      if(user.licenseStatus === "Rejected"){
-        alert("Your driving license was rejected. Please submit it again.")
-        nav("/license")
+      if (user.licenseStatus === "Rejected") {
+        alert("Your driving license was rejected. Please submit it again.");
+        nav("/license");
         return;
       }
 
-      if(user.licenseStatus !== "Approved"){
+      if (user.licenseStatus !== "Approved") {
         alert("Not Yet Approved It Might Take 12-24Hrs");
         return;
       }
-
 
       const userId = user._id;
       console.log(localStorage.getItem("userId"));
@@ -96,7 +96,7 @@ export default function Home() {
       const totalAmount = totalDays * car.carPrice;
 
       const order = await axios.post(
-        "http://localhost:5000/api/payment/createOrder",
+        `${API_URL}/api/payment/createOrder`,
         {
           amount: totalAmount,
         },
@@ -117,12 +117,12 @@ export default function Home() {
         handler: async function (response) {
           // Verify payment
           const verify = await axios.post(
-            "http://localhost:5000/api/payment/verify",
+            `${API_URL}/api/payment/verify`,
             response,
           );
           if (verify.data.success) {
             await axios.post(
-              "http://localhost:5000/api/rentals/bookcar",
+              `${API_URL}/api/rentals/bookcar`,
               {
                 userId,
                 carId: car._id,

@@ -1,6 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
+const API_URL =
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+
 export default function AddCar({ selectedCar }) {
   const [img, setImg] = useState(null);
   const [carName, setCarName] = useState("");
@@ -48,7 +51,7 @@ export default function AddCar({ selectedCar }) {
       let res;
       if (selectedCar) {
         res = await axios.put(
-          `http://localhost:5000/api/car/update/${selectedCar._id}`,
+          `${API_URL}/api/car/update/${selectedCar._id}`,
           formData,
           {
             headers: {
@@ -59,7 +62,7 @@ export default function AddCar({ selectedCar }) {
         alert("Car Updated Succesfully");
       } else {
         res = await axios.post(
-          "http://localhost:5000/api/car/create",
+          `${API_URL}/api/car/create`,
           formData,
           {
             headers: {

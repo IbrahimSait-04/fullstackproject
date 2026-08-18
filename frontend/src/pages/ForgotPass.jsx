@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+const API_URL =
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+
 export default function ForgotPass() {
   const [email, setEmail] = useState("");
   const nav = useNavigate();
@@ -11,7 +14,7 @@ export default function ForgotPass() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/forgot-password",
+        `${API_URL}/api/forgot-password`,
         { email }
       );
 

@@ -1,6 +1,9 @@
 import React, {useCallback,  useEffect, useState } from "react";
 import axios from "axios";
 
+const API_URL =
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+
 export default function LicenseVerification() {
   const [users, setUsers] = useState([]);
 
@@ -10,7 +13,7 @@ export default function LicenseVerification() {
   const fetchUsers =useCallback( async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/admin/getusers",
+        `${API_URL}/api/admin/getusers`,
         {
           headers: {
             authorization: `Bearer ${adminToken}`,
@@ -31,7 +34,7 @@ export default function LicenseVerification() {
   const updateLicenseStatus = async (id, status) => {
     try {
       const res = await axios.put(
-        `http://localhost:5000/api/admin/license-status/${id}`,
+        `${API_URL}/api/admin/license-status/${id}`,
         { status },
         {
           headers: {

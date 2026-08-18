@@ -4,6 +4,9 @@ import axios from "axios";
 import Logo from "../assets/Imperial-Logo.png";
 import titleimg from "../assets/title_img.png";
 
+const API_URL =
+  process.env.NODE_ENV === "production" ? "" : "${API_URL}";
+
 export default function Register() {
   const nav = useNavigate();
 
@@ -22,19 +25,20 @@ export default function Register() {
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
 
-
-    if(!emailRegex.test(email)){
-      alert("Please Enter a valid email")
+    if (!emailRegex.test(email)) {
+      alert("Please Enter a valid email");
       return;
     }
 
-    if(!passwordRegex.test(password)){
-      alert("Password must be at least 8 characters and contain one uppercase letter, one lowercase letter, and one number.")
+    if (!passwordRegex.test(password)) {
+      alert(
+        "Password must be at least 8 characters and contain one uppercase letter, one lowercase letter, and one number.",
+      );
       return;
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/users/register", {
+      const res = await axios.post(`${API_URL}/api/users/register`, {
         name,
         email,
         password,
@@ -48,9 +52,11 @@ export default function Register() {
       if (error.response && error.response.status === 409) {
         alert("This email id is already registered");
       } else {
-        alert(error.response?.data?.message ||
-          error.response?.data ||
-          "Registration failed");
+        alert(
+          error.response?.data?.message ||
+            error.response?.data ||
+            "Registration failed",
+        );
       }
     }
   }

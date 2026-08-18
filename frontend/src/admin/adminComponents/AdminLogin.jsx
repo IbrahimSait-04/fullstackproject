@@ -4,6 +4,9 @@ import axios from "axios";
 import Logo from "../../assets/Imperial-Logo.png";
 import titleimg from "../../assets/title_img.png";
 
+const API_URL =
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+
 export default function AdminLogin() {
   const nav = useNavigate();
 
@@ -15,7 +18,7 @@ export default function AdminLogin() {
 
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/admin/adminlogin",
+        `${API_URL}/api/admin/adminlogin`,
         {
           email,
           password,

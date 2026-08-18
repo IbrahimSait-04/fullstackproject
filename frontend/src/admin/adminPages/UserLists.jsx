@@ -2,6 +2,9 @@ import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import AdminNav from "../adminComponents/AdminNav";
 
+const API_URL =
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+
 export default function UserLists() {
   const adminToken = localStorage.getItem("adminToken");
   
@@ -9,7 +12,7 @@ export default function UserLists() {
 
   const fetchUsers =useCallback( async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/getusers", {
+      const res = await axios.get(`${API_URL}/api/admin/getusers`, {
         headers: {
           authorization: `Bearer ${adminToken}`,
         },
@@ -29,7 +32,7 @@ export default function UserLists() {
     async (id) => {
       try {
         await axios.put(
-          `http://localhost:5000/api/toggleBan/${id}`,
+          `${API_URL}/api/toggleBan/${id}`,
           {},
           {
             headers: {

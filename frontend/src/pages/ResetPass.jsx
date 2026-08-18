@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+const API_URL = process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+
 export default function ResetPass() {
   const { id, token } = useParams();
 
@@ -19,10 +21,10 @@ export default function ResetPass() {
 
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/reset-password/${id}/${token}`,
+        `${API_URL}/api/reset-password/${id}/${token}`,
         {
           password,
-        }
+        },
       );
 
       alert(res.data.message);
@@ -34,13 +36,8 @@ export default function ResetPass() {
 
   return (
     <div className="container mt-5">
-      <div
-        className="card p-4 mx-auto"
-        style={{ maxWidth: "450px" }}
-      >
-        <h2 className="text-center mb-4">
-          Reset Password
-        </h2>
+      <div className="card p-4 mx-auto" style={{ maxWidth: "450px" }}>
+        <h2 className="text-center mb-4">Reset Password</h2>
 
         <form onSubmit={handleSubmit}>
           <input
@@ -56,15 +53,10 @@ export default function ResetPass() {
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
-            onChange={(e) =>
-              setConfirmPassword(e.target.value)
-            }
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
 
-          <button
-            className="btn btn-primary w-100"
-            type="submit"
-          >
+          <button className="btn btn-primary w-100" type="submit">
             Update Password
           </button>
         </form>

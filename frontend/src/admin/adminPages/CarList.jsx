@@ -1,6 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
+const API_URL =
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+
 export default function CarList({ setSelectedCar }) {
   const [car, setCar] = useState([]);
 
@@ -12,7 +15,7 @@ export default function CarList({ setSelectedCar }) {
 
   const fetchCars = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/car/getCars");
+      const res = await axios.get(`${API_URL}/api/car/getCars`);
       setCar(res.data);
       console.log(res.data);
     } catch (error) {
@@ -22,7 +25,7 @@ export default function CarList({ setSelectedCar }) {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/car/delete/${id}`, {
+      await axios.delete(`${API_URL}/api/car/delete/${id}`, {
         headers: {
           authorization: `Bearer ${adminToken}`,
         },
