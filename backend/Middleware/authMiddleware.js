@@ -2,11 +2,14 @@ const jwt = require("jsonwebtoken");
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
+console.log("JWT SECRET EXISTS:", !!JWT_SECRET);
+
 const authMiddleware = async (req, res, next) => {
   try {
+    console.log("AUTH HEADER EXISTS:", !!req.headers.authorization);
+
     let authToken = req.headers.authorization;
 
-    console.log("Authorization:", req.headers.authorization);
     if (!authToken) {
       return res.status(401).send("Unauthorized Access");
     }
@@ -24,10 +27,6 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-console.log("JWT SECRET EXISTS:", !!process.env.JWT_SECRET);
-console.log("AUTH HEADER EXISTS:", !!req.headers.authorization);
-
-
 const adminMiddleware = async (req, res, next) => {
   try {
     let adminToken = req.headers.authorization;
@@ -35,13 +34,21 @@ const adminMiddleware = async (req, res, next) => {
     if (!adminToken) {
       return res.status(401).send("Unauthorised Access");
     }
+
     adminToken = adminToken.split(" ")[1];
+
     const decoded = jwt.verify(adminToken, JWT_SECRET);
+
     req.adminId = decoded.adminId;
+
     next();
   } catch (error) {
     console.log(error);
     return res.status(401).send("Invalid Token");
   }
 };
-module.exports = { authMiddleware, adminMiddleware };
+
+module.exports = {
+  authMiddleware,
+  adminMiddleware,
+};
