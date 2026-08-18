@@ -14,13 +14,10 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        "http://localhost:5000/api/users/login",
-        {
-          email,
-          password,
-        }
-      );
+      const res = await axios.post("http://localhost:5000/api/users/login", {
+        email,
+        password,
+      });
 
       console.log(res.data);
 
@@ -32,21 +29,18 @@ export default function Login() {
         alert("Invalid Credentials");
       }
     } catch (error) {
-      if(error.response?.status === 403){
-        alert ("Your Account Has Been Banned By Admin")
-      }
-      else if(error.response?.status === 401){
-        alert ("Invalid Email or password")
-      }
-      else{
-        alert("Something Went Wrong")
+      if (error.response?.status === 403) {
+        alert("Your Account Has Been Banned By Admin");
+      } else if (error.response?.status === 401) {
+        alert("Invalid Email or password");
+      } else {
+        alert("Something Went Wrong");
       }
     }
   }
 
   return (
     <div className="relative w-full h-screen">
-
       {/* Background */}
       <img
         src={titleimg}
@@ -59,18 +53,12 @@ export default function Login() {
 
       {/* Login Card */}
       <div className="relative z-10 flex justify-center items-center h-full">
-
         <form
           onSubmit={handleLogin}
           className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-2xl shadow-2xl w-[380px] p-10"
         >
-
           <div className="flex justify-center mb-6">
-            <img
-              src={Logo}
-              alt="logo"
-              className="w-28"
-            />
+            <img src={Logo} alt="logo" className="w-28" />
           </div>
 
           <h2 className="text-3xl font-bold text-center text-white mb-8">
@@ -102,16 +90,20 @@ export default function Login() {
 
           <p className="text-center text-white mt-6">
             Don't have an account?{" "}
-            <Link
-              to="/register"
-              className="text-sky-300 hover:underline"
-            >
+            <Link to="/register" className="text-sky-300 hover:underline">
               Register
             </Link>
           </p>
 
+          <p className="text-center text-white mt-6">
+            <Link
+              className="text-sky-300 hover:underline"
+              to={"/forgot-password"}
+            >
+              Forgot Password
+            </Link>
+          </p>
         </form>
-
       </div>
     </div>
   );

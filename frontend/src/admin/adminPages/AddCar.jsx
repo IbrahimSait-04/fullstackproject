@@ -7,10 +7,18 @@ export default function AddCar({ selectedCar, setSelectedCar }) {
   const [carPrice, setCarPrice] = useState("");
   const [description, setDescription] = useState("");
   const [regNo, setRegNo] = useState("");
+  const [rc,setRc]=useState("");
+  const [puc,setPuc]=useState("");
 
   const [car, setCar] = useState([]);
 
   const adminToken = localStorage.getItem("adminToken");
+
+  const formatDate = (date) => {
+  if (!date) return "";
+
+  return new Date(date).toISOString().split("T")[0];
+};
 
   useEffect(() => {
     fetchCars();
@@ -32,6 +40,8 @@ export default function AddCar({ selectedCar, setSelectedCar }) {
       setCarPrice(selectedCar.carPrice);
       setDescription(selectedCar.description);
       setRegNo(selectedCar.regNo);
+      setRc(formatDate(selectedCar.rc));
+      setPuc(formatDate(selectedCar.puc));
     }
   }, [selectedCar]);
 
@@ -45,6 +55,8 @@ export default function AddCar({ selectedCar, setSelectedCar }) {
       formData.append("carPrice", carPrice);
       formData.append("description", description);
       formData.append("regNo", regNo);
+      formData.append("rc", rc);
+      formData.append("puc", puc);
 
       let res;
       if (selectedCar) {
@@ -77,6 +89,9 @@ export default function AddCar({ selectedCar, setSelectedCar }) {
       setCarPrice("");
       setDescription("");
       setRegNo("");
+      setRc("");
+      setPuc("");
+      
     } catch (error) {
       console.log(error);
     }
@@ -149,6 +164,33 @@ export default function AddCar({ selectedCar, setSelectedCar }) {
           />
         </div>
 
+        <div>
+          <label className="block mb-2 font-semibold">
+            Registration Validity
+          </label>
+
+          <input
+            type="text"
+            placeholder="YYYY-MM-DD"
+            value={rc}
+            onChange={(e) => setRc(e.target.value)}
+            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+
+        <div>
+          <label className="block mb-2 font-semibold">
+            PUC Validity
+          </label>
+
+          <input
+            type="text"
+            placeholder="YYYY-MM-DD"
+            value={puc}
+            onChange={(e) => setPuc(e.target.value)}
+            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
         <button
           type="submit"
           className={`w-full py-3 rounded-lg text-white font-semibold transition ${

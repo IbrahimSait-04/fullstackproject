@@ -21,6 +21,14 @@ const carSchema = new mongoose.Schema({
     regNo:{
         type:String,
         required:true
+    },
+    rc:{
+        type:Date,
+        required:true
+    },
+    puc:{
+        type:Date,
+        required:true,
     }
 })
 

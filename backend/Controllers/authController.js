@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const User = require("../Models/userSchema");
 const bcrypt = require("bcryptjs");
 const Admin = require("../Models/adminModel");
-
+const transporter = require("../config/nodeMailer");
 
 const JWT_SECRET = "Knight*58410";
 
@@ -74,11 +74,11 @@ const userLogin = async (req, res) => {
     if (!user) {
       return res.status(404).send("User Not Found");
     }
-    if(user.ban){
+    if (user.ban) {
       return res.status(403).json({
-        success:false,
-        message:"Your Account Has Been Banned By Admin"
-      })
+        success: false,
+        message: "Your Account Has Been Banned By Admin",
+      });
     }
     const isPwdMatch = await bcrypt.compare(password, user.password);
     console.log(isPwdMatch);
@@ -106,10 +106,129 @@ const getUsers = async (req, res) => {
   }
 };
 
+const updateLicense = async (req, res) => {
+  try {
+    const { license } = req.body;
+
+    if (!license) {
+      return res.status(400).send("License is required");
+    }
+
+    const user = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).send("User Not Found");
+    }
+
+    user.license = license;
+    user.licenseStatus = "Pending";
+
+    await user.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Driving License Submitted For Verification",
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("internal server error");
+  }
+};
+
+const getMyProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select("-password");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User Not Found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+const forgotPass = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).send("User Not Found");
+    }
+
+    const token = await jwt.sign({ id: user._id }, JWT_SECRET, {
+      expiresIn: "1d",
+    });
+    const resetLink = `http://localhost:3000/reset-password/${user._id}/${token}`;
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: user.email,
+      subject: "Reset Password",
+      html: `
+    <h2>Reset Password</h2>
+
+    <p>Click the link below to reset your password:</p>
+
+    <a href="${resetLink}">
+      Reset Password
+    </a>
+  `,
+    };
+    await transporter.sendMail(mailOptions);
+    return res.status(200).json({
+      success: true,
+      message: "Password reset email sent.",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const resetPass = async (req, res) => {
+  try {
+    const { id, token } = req.params;
+    const { password } = req.body;
+    await jwt.verify(token, JWT_SECRET);
+
+    const salt = await bcrypt.genSalt();
+    const hashedpass = await bcrypt.hash(password, salt);
+    await User.findByIdAndUpdate(id, {
+      password: hashedpass,
+    });
+
+    return res.status(200).json({
+      success: true,
+      message: "Password Updated Succesfully",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({
+      success: false,
+      message: "Invalid or Expired Token",
+    });
+  }
+};
 module.exports = {
   userRegister,
   userLogin,
   getUsers,
   adminRegister,
   adminLogin,
+  getMyProfile,
+  forgotPass,
+  resetPass,
+  updateLicense,
 };

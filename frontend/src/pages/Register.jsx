@@ -14,6 +14,25 @@ export default function Register() {
   async function handleRegister(e) {
     e.preventDefault();
 
+    //Email Validation
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    //PasswordRegex
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+
+
+    if(!emailRegex.test(email)){
+      alert("Please Enter a valid email")
+      return;
+    }
+
+    if(!passwordRegex.test(password)){
+      alert("Password must be at least 8 characters and contain one uppercase letter, one lowercase letter, and one number.")
+      return;
+    }
+
     try {
       const res = await axios.post("http://localhost:5000/api/users/register", {
         name,
@@ -29,7 +48,9 @@ export default function Register() {
       if (error.response && error.response.status === 409) {
         alert("This email id is already registered");
       } else {
-        alert(error.response.message, "Registration failed");
+        alert(error.response?.data?.message ||
+          error.response?.data ||
+          "Registration failed");
       }
     }
   }

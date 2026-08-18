@@ -25,13 +25,11 @@ export default function Navbar() {
         <Link className=" hover:text-gray-100" to={"/myrentals"}>
           My Rents
         </Link>
-        <Link className=" hover:text-gray-100">About Us</Link>
-        <Link className=" hover:text-gray-100">Contact</Link>
+        <Link to={"/about"} className=" hover:text-gray-100">About Us</Link>
+        <Link to={"/contact"} className=" hover:text-gray-100">Contact</Link>
       </div>
       {token ? (
-        <button className="hover:text-gray-100" onClick={handleLogOut}>
-          LogOut
-        </button>
+        <Link to={"/profile"}>Profile</Link>
       ) : (
         <Link className="hover:text-gray-100" to={"/"}>
           LogIn

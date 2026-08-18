@@ -9,7 +9,7 @@ const JWT_SECRET = "Knight*58410";
 
 const createCar = async (req, res) => {
   try {
-    const { carName, carPrice, description, regNo } = req.body;
+    const { carName, carPrice, description, regNo , rc , puc} = req.body;
     const img = req.file ? req.file.path : "";
     const carExits = await Car.findOne({ regNo });
     if (carExits) {
@@ -21,6 +21,8 @@ const createCar = async (req, res) => {
       carPrice,
       description,
       regNo,
+      rc,
+      puc,
     });
     await car.save();
     res.status(200).send("Car Created Succesfully");
@@ -42,7 +44,7 @@ const updateCar = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const { carName, carPrice, description, regNo } = req.body;
+    const { carName, carPrice, description, regNo, rc, puc } = req.body;
     const img = req.file ? req.file.path : undefined;
 
     const updatedCar = {
@@ -50,6 +52,8 @@ const updateCar = async (req, res) => {
       carPrice,
       description,
       regNo,
+      rc,
+      puc,
     };
     if (img) {
       updatedCar.img = img;

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import titleimg from "../assets/title_img.png";
 import Footer from "../components/Footer";
@@ -9,7 +10,10 @@ export default function Home() {
   const [cars, setCars] = useState([]);
   const [pickupDate, setPickupDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
+  const [selectedCar, setSelectedCar] = useState(null);
+  const [showBookingAlert, setShowBookingAlert] = useState(false);
   const [showCars, setShowCars] = useState(false);
+  const nav = useNavigate();
 
   useEffect(() => {
     const fetchCars = async (req, res) => {
@@ -52,6 +56,37 @@ export default function Home() {
   const bookCar = async (car) => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
+
+      if(!user){
+        alert("Please Login To Continue")
+        return;
+      }
+
+
+      if(!user.license){
+        alert("Please Add Your Driving License Before Booking");
+        nav("/license");
+        return;
+      }
+
+
+      if(user.licenseStatus === "Pending"){
+        alert("Your Driving License Is Waiting For Admins Approval");
+        return;
+      }
+
+      if(user.licenseStatus === "Rejected"){
+        alert("Your driving license was rejected. Please submit it again.")
+        nav("/license")
+        return;
+      }
+
+      if(user.licenseStatus !== "Approved"){
+        alert("Not Yet Approved It Might Take 12-24Hrs");
+        return;
+      }
+
+
       const userId = user._id;
       console.log(localStorage.getItem("userId"));
 
@@ -100,6 +135,7 @@ export default function Home() {
                 },
               },
             );
+            searchCars();
             return alert("Car Booked Successfully");
           } else {
             alert("Verification Failed");
@@ -107,8 +143,11 @@ export default function Home() {
         },
       };
 
+      if (!window.Razorpay) {
+        alert("Razorpay SDK failed to load.");
+        return;
+      }
       const razorpay = new window.Razorpay(options);
-
       razorpay.open();
     } catch (error) {
       console.log(error);
@@ -116,10 +155,14 @@ export default function Home() {
   };
   const today = new Date().toISOString().split("T")[0];
 
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  let minReturnDate = today;
 
-  const minReturnDate = tomorrow.toISOString().split("T")[0];
+  if (pickupDate) {
+    const nextDay = new Date(pickupDate);
+    nextDay.setDate(nextDay.getDate() + 1);
+
+    minReturnDate = nextDay.toISOString().split("T")[0];
+  }
   console.log(today);
 
   return (
@@ -299,7 +342,10 @@ export default function Home() {
                       </div>
 
                       <button
-                        onClick={() => bookCar(c)}
+                        onClick={() => {
+                          setSelectedCar(c);
+                          setShowBookingAlert(true);
+                        }}
                         className="w-full mt-6 bg-sky-600 hover:bg-sky-700 text-white py-3 rounded-xl font-semibold transition"
                       >
                         Book Now
@@ -360,6 +406,69 @@ export default function Home() {
           </div>
         </div>
       </section>
+      {showBookingAlert && selectedCar && (
+        <div className="fixed inset-0 bg-black/50 flex justify-center items-center z-50">
+          <div className="bg-white rounded-2xl p-8 w-[90%] max-w-lg">
+            <h2 className="text-2xl font-bold mb-4">Confirm Booking</h2>
+
+            <div className="space-y-3">
+              <div className="flex justify-between">
+                <span>Car</span>
+                <span>{selectedCar.carName}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Pickup</span>
+                <span>{pickupDate}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Return</span>
+                <span>{returnDate}</span>
+              </div>
+
+              <div className="flex justify-between">
+                <span>Total Amount</span>
+                <span className="font-bold text-green-600">
+                  ₹
+                  {((new Date(returnDate) - new Date(pickupDate)) /
+                    (1000 * 60 * 60 * 24)) *
+                    selectedCar.carPrice}
+                </span>
+              </div>
+            </div>
+
+            <div className="mt-6 p-4 bg-yellow-50 border border-yellow-300 rounded-xl">
+              <h3 className="font-bold mb-2">Cancellation Policy</h3>
+
+              <ul className="text-sm space-y-1 list-disc ml-5">
+                <li>More than 3 days before pickup → 75% refund</li>
+                <li>12 hours to 3 days before pickup → 50% refund</li>
+                <li>Less than 12 hours before pickup → No refund</li>
+              </ul>
+            </div>
+
+            <div className="flex justify-end gap-3 mt-6">
+              <button
+                onClick={() => setShowBookingAlert(false)}
+                className="px-5 py-2 rounded-lg border"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={() => {
+                  setShowBookingAlert(false);
+                  bookCar(selectedCar);
+                }}
+                className="px-5 py-2 rounded-lg bg-sky-600 text-white"
+              >
+                Proceed to Payment
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <Footer />
     </div>
   );

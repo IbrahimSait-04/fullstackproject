@@ -76,11 +76,11 @@ export default function Footer() {
             </li>
 
             <li>
-              <Link className="hover:text-white cursor-pointer">About Us</Link>
+              <Link to={"/about"} className="hover:text-white cursor-pointer">About Us</Link>
             </li>
 
             <li>
-              <Link className="hover:text-white cursor-pointer">Contact</Link>
+              <Link to={"/contact"} className="hover:text-white cursor-pointer">Contact</Link>
             </li>
           </ul>
         </div>
