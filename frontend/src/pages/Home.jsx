@@ -485,7 +485,7 @@ export default function Home() {
 
         <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 md:mt-16 md:grid-cols-4 md:gap-8">
           <div className="rounded-xl p-6 text-center shadow-lg sm:p-8">
-            <div className="mb-4 text-4xl sm:text-5xl">🚗</div>
+            <div className="mb-4 text-4xl sm:text-5xl">🏎️</div>
 
             <h3 className="text-lg font-bold sm:text-xl">Wide Selection</h3>
 
