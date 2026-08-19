@@ -4,7 +4,9 @@ import Navbar from "../components/Navbar";
 import axios from "axios";
 
 const API_URL =
-  process.env.NODE_ENV === "production" ? "" :  "http://localhost:5000";
+  process.env.NODE_ENV === "production"
+    ? ""
+    : "http://localhost:5000";
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -22,16 +24,21 @@ export default function Profile() {
           return;
         }
 
-        const res = await axios.get(`${API_URL}/api/user/profile`, {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await axios.get(
+          `${API_URL}/api/user/profile`,
+          {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         setUser(res.data.user);
 
-        // Optional: keep localStorage updated too
-        localStorage.setItem("user", JSON.stringify(res.data.user));
+        localStorage.setItem(
+          "user",
+          JSON.stringify(res.data.user)
+        );
       } catch (error) {
         console.log(error);
 
@@ -58,41 +65,43 @@ export default function Profile() {
     switch (user?.licenseStatus) {
       case "Approved":
         return {
-          bg: "#dcfce7",
-          text: "#15803d",
+          bg: "bg-green-100",
+          text: "text-green-700",
           label: "✓ Approved",
         };
 
       case "Pending":
         return {
-          bg: "#fef3c7",
-          text: "#b45309",
+          bg: "bg-yellow-100",
+          text: "text-yellow-700",
           label: "⏳ Pending",
         };
 
       case "Rejected":
         return {
-          bg: "#fee2e2",
-          text: "#dc2626",
+          bg: "bg-red-100",
+          text: "text-red-600",
           label: "✕ Rejected",
         };
 
       default:
         return {
-          bg: "#f1f5f9",
-          text: "#64748b",
+          bg: "bg-slate-100",
+          text: "text-slate-500",
           label: "Not Added",
         };
     }
   };
+
+  /* ================= LOADING ================= */
 
   if (loading) {
     return (
       <>
         <Navbar />
 
-        <div className="min-h-[calc(100vh-70px)] flex justify-center items-center bg-gray-100">
-          <h3 className="text-xl font-semibold text-gray-600">
+        <div className="flex min-h-[calc(100vh-70px)] items-center justify-center bg-gray-100 px-4">
+          <h3 className="text-lg font-semibold text-gray-600 sm:text-xl">
             Loading Profile...
           </h3>
         </div>
@@ -110,205 +119,291 @@ export default function Profile() {
     <>
       <Navbar />
 
-      <div
-        className="min-h-[calc(100vh-70px)] flex justify-center items-center"
+      <main
+        className="
+          flex
+          min-h-[calc(100vh-70px)]
+          items-start
+          justify-center
+          px-3
+          py-8
+          sm:px-5
+          sm:py-10
+          md:items-center
+          md:py-12
+        "
         style={{
-          background: "linear-gradient(135deg, #eff6ff, #e0f2fe, #f8fafc)",
-          padding: "50px 20px",
+          background:
+            "linear-gradient(135deg, #eff6ff, #e0f2fe, #f8fafc)",
         }}
       >
+
+        {/* Profile Card */}
         <div
-          className="bg-white shadow-xl"
-          style={{
-            width: "520px",
-            maxWidth: "100%",
-            borderRadius: "24px",
-            overflow: "hidden",
-          }}
+          className="
+            w-full
+            max-w-[520px]
+            overflow-hidden
+            rounded-2xl
+            bg-white
+            shadow-xl
+            sm:rounded-3xl
+          "
         >
-          {/* HEADER */}
+
+          {/* ================= HEADER ================= */}
           <div
-            className="text-white text-center"
+            className="
+              px-5
+              py-7
+              text-center
+              text-white
+              sm:px-6
+              sm:py-8
+            "
             style={{
-              padding: "32px 20px",
-              background: "linear-gradient(135deg, #0ea5e9, #2563eb, #4f46e5)",
+              background:
+                "linear-gradient(135deg, #0ea5e9, #2563eb, #4f46e5)",
             }}
           >
+
+            {/* Avatar */}
             <div
-              className="mx-auto mb-3 flex justify-center items-center"
-              style={{
-                width: "75px",
-                height: "75px",
-                borderRadius: "50%",
-                background: "rgba(255,255,255,0.2)",
-                border: "2px solid rgba(255,255,255,0.4)",
-                fontSize: "32px",
-                fontWeight: "bold",
-              }}
+              className="
+                mx-auto
+                mb-3
+                flex
+                h-16
+                w-16
+                items-center
+                justify-center
+                rounded-full
+                border-2
+                border-white/40
+                bg-white/20
+                text-2xl
+                font-bold
+                sm:h-[75px]
+                sm:w-[75px]
+                sm:text-[32px]
+              "
             >
               {user?.name?.charAt(0)?.toUpperCase() || "U"}
             </div>
 
-            <h2 className="fw-bold mb-1">{user?.name || "User"}</h2>
+            <h2 className="mb-1 text-2xl font-bold sm:text-3xl">
+              {user?.name || "User"}
+            </h2>
 
-            <p className="mb-0 opacity-75">Manage your account</p>
+            <p className="text-sm opacity-75 sm:text-base">
+              Manage your account
+            </p>
+
           </div>
 
-          {/* BODY */}
-          <div style={{ padding: "30px" }}>
-            {/* PERSONAL INFORMATION */}
-            <div className="mb-4">
-              <h5 className="fw-bold mb-3">Personal Information</h5>
+          {/* ================= BODY ================= */}
+          <div className="p-5 sm:p-7 md:p-8">
 
-              <div className="mb-3">
-                <label className="fw-semibold text-secondary mb-2 d-block">
+            {/* Personal Information */}
+            <section>
+
+              <h5 className="mb-4 text-lg font-bold text-gray-800 sm:text-xl">
+                Personal Information
+              </h5>
+
+              {/* Name */}
+              <div className="mb-4">
+
+                <label className="mb-2 block text-sm font-semibold text-gray-600">
                   Full Name
                 </label>
 
                 <div
-                  className="form-control form-control-lg"
-                  style={{
-                    background: "#f8fafc",
-                    borderRadius: "12px",
-                    border: "1px solid #e2e8f0",
-                  }}
+                  className="
+                    min-h-[52px]
+                    w-full
+                    break-words
+                    rounded-xl
+                    border
+                    border-slate-200
+                    bg-slate-50
+                    px-4
+                    py-3
+                    text-sm
+                    text-gray-800
+                    sm:text-base
+                  "
                 >
                   {user?.name || "Not Available"}
                 </div>
+
               </div>
 
+              {/* Email */}
               <div>
-                <label className="fw-semibold text-secondary mb-2 d-block">
+
+                <label className="mb-2 block text-sm font-semibold text-gray-600">
                   Email Address
                 </label>
 
                 <div
-                  className="form-control form-control-lg"
-                  style={{
-                    background: "#f8fafc",
-                    borderRadius: "12px",
-                    border: "1px solid #e2e8f0",
-                  }}
+                  className="
+                    min-h-[52px]
+                    w-full
+                    break-all
+                    rounded-xl
+                    border
+                    border-slate-200
+                    bg-slate-50
+                    px-4
+                    py-3
+                    text-sm
+                    text-gray-800
+                    sm:text-base
+                  "
                 >
                   {user?.email || "Not Available"}
                 </div>
+
               </div>
-            </div>
 
-            <hr className="my-4" />
+            </section>
 
-            {/* LICENSE */}
-            <div className="mb-4">
-              <div className="d-flex justify-content-between align-items-start mb-3">
+            <hr className="my-6 border-gray-200 sm:my-7" />
+
+            {/* ================= LICENSE ================= */}
+            <section>
+
+              <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+
                 <div>
-                  <h5 className="fw-bold mb-1">Driving License</h5>
+                  <h5 className="text-lg font-bold text-gray-800 sm:text-xl">
+                    Driving License
+                  </h5>
 
-                  <small className="text-secondary">
+                  <small className="text-sm text-gray-500">
                     Required for renting a car
                   </small>
                 </div>
 
                 <span
-                  className="px-3 py-2 rounded-pill fw-semibold"
-                  style={{
-                    background: status.bg,
-                    color: status.text,
-                    fontSize: "13px",
-                    whiteSpace: "nowrap",
-                  }}
+                  className={`w-fit rounded-full px-3 py-2 text-xs font-semibold sm:text-sm ${status.bg} ${status.text}`}
                 >
                   {status.label}
                 </span>
+
               </div>
 
-              {/* LICENSE NUMBER */}
-              <div
-                className="p-3"
-                style={{
-                  background: "#f8fafc",
-                  borderRadius: "12px",
-                  border: "1px solid #e2e8f0",
-                }}
-              >
-                <p className="text-secondary d-block mb-1 fw-bold">
+              {/* License Number */}
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+
+                <p className="mb-1 text-sm font-bold text-gray-600">
                   License Number:
                 </p>
 
-                <span className="fw-semibold">
+                <span className="break-words text-sm font-semibold text-gray-800 sm:text-base">
                   {user?.license || "No license submitted"}
                 </span>
+
               </div>
 
-              {/* ACTION */}
+              {/* Update License */}
               {user?.licenseStatus !== "Approved" && (
                 <Link
                   to="/license"
-                  className="btn btn-outline-primary w-100 mt-3"
-                  style={{
-                    borderRadius: "10px",
-                    padding: "11px",
-                  }}
+                  className="
+                    mt-3
+                    block
+                    w-full
+                    rounded-xl
+                    border
+                    border-blue-600
+                    px-4
+                    py-3
+                    text-center
+                    text-sm
+                    font-semibold
+                    text-blue-600
+                    transition
+                    hover:bg-blue-600
+                    hover:text-white
+                    sm:text-base
+                  "
                 >
-                  {user?.license ? "Update License" : "Add Driving License"}
+                  {user?.license
+                    ? "Update License"
+                    : "Add Driving License"}
                 </Link>
               )}
 
+              {/* Approved */}
               {user?.licenseStatus === "Approved" && (
-                <div
-                  className="text-center mt-3 py-2"
-                  style={{
-                    color: "#15803d",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                  }}
-                >
+                <div className="mt-3 py-2 text-center text-sm font-semibold text-green-700">
                   ✓ Your license has been verified by admin
                 </div>
               )}
 
+              {/* Rejected */}
               {user?.licenseStatus === "Rejected" && (
-                <div
-                  className="text-center mt-3 py-2"
-                  style={{
-                    color: "#dc2626",
-                    fontSize: "14px",
-                    fontWeight: "600",
-                  }}
-                >
+                <div className="mt-3 py-2 text-center text-sm font-semibold text-red-600">
                   Your license was rejected. Please update it.
                 </div>
               )}
-            </div>
 
-            <hr className="my-4" />
+            </section>
 
-            {/* ACCOUNT ACTIONS */}
-            <div className="d-grid gap-3">
+            <hr className="my-6 border-gray-200 sm:my-7" />
+
+            {/* ================= ACCOUNT ACTIONS ================= */}
+            <section className="space-y-3">
+
               <Link
                 to="/forgot-password"
-                className="btn btn-primary btn-lg"
-                style={{
-                  borderRadius: "12px",
-                  padding: "11px",
-                }}
+                className="
+                  block
+                  w-full
+                  rounded-xl
+                  bg-blue-600
+                  px-4
+                  py-3
+                  text-center
+                  text-sm
+                  font-semibold
+                  text-white
+                  transition
+                  hover:bg-blue-700
+                  sm:text-base
+                "
               >
                 🔐 Reset Password
               </Link>
 
               <button
                 onClick={handleLogout}
-                className="btn btn-outline-danger btn-lg"
-                style={{
-                  borderRadius: "12px",
-                  padding: "11px",
-                }}
+                className="
+                  w-full
+                  rounded-xl
+                  border
+                  border-red-500
+                  px-4
+                  py-3
+                  text-sm
+                  font-semibold
+                  text-red-600
+                  transition
+                  hover:bg-red-500
+                  hover:text-white
+                  sm:text-base
+                "
               >
                 Logout
               </button>
-            </div>
+
+            </section>
+
           </div>
         </div>
-      </div>
+      </main>
     </>
   );
 }

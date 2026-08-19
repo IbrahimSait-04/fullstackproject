@@ -13,87 +13,109 @@ import { Link } from "react-router-dom";
 
 export default function Footer() {
   return (
-    <footer className="bg-slate-900 text-white mt-20">
-      <div className="max-w-7xl mx-auto px-8 py-16 grid md:grid-cols-4 gap-10">
-        {/* Company */}
-        <div>
-          <img src={FooterLogo} alt="Logo" className="w-36 mb-4" />
+    <footer className="mt-12 bg-slate-900 text-white sm:mt-16 md:mt-20">
 
-          <p className="text-gray-400 leading-7">
+      {/* Footer Content */}
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-10 px-5 py-10 sm:grid-cols-2 sm:px-8 sm:py-12 md:grid-cols-4 md:gap-8 md:py-16">
+
+        {/* Company */}
+        <div className="sm:col-span-2 md:col-span-1">
+
+          <img
+            src={FooterLogo}
+            alt="Logo"
+            className="mb-4 w-28 sm:w-32 md:w-36"
+          />
+
+          <p className="max-w-md text-sm leading-7 text-gray-400 sm:text-base">
             Imperial Car Rental provides premium, affordable, and reliable
             vehicles for business trips, vacations, and daily commuting.
           </p>
 
-          <div className="flex gap-4 mt-6">
+          {/* Social Icons */}
+          <div className="mt-5 flex flex-wrap gap-3 sm:mt-6 sm:gap-4">
+
             <button
               type="button"
-              className="bg-sky-600 hover:bg-sky-700 p-3 rounded-full duration-300"
+              aria-label="Facebook"
+              className="rounded-full bg-sky-600 p-3 transition duration-300 hover:bg-sky-700"
             >
               <FaFacebookF />
             </button>
 
             <button
               type="button"
-              className="bg-sky-600 hover:bg-sky-700 p-3 rounded-full duration-300"
+              aria-label="Instagram"
+              className="rounded-full bg-sky-600 p-3 transition duration-300 hover:bg-sky-700"
             >
               <FaInstagram />
             </button>
 
             <button
               type="button"
-              className="bg-sky-600 hover:bg-sky-700 p-3 rounded-full duration-300"
+              aria-label="Twitter"
+              className="rounded-full bg-sky-600 p-3 transition duration-300 hover:bg-sky-700"
             >
               <FaTwitter />
             </button>
 
             <button
               type="button"
-              className="bg-sky-600 hover:bg-sky-700 p-3 rounded-full duration-300"
+              aria-label="LinkedIn"
+              className="rounded-full bg-sky-600 p-3 transition duration-300 hover:bg-sky-700"
             >
               <FaLinkedinIn />
             </button>
+
           </div>
         </div>
 
         {/* Quick Links */}
         <div>
-          <h2 className="text-2xl font-semibold mb-5">Quick Links</h2>
+          <h2 className="mb-4 text-xl font-semibold sm:mb-5 sm:text-2xl">
+            Quick Links
+          </h2>
 
-          <ul className="space-y-3 text-gray-400">
+          <ul className="space-y-3 text-sm text-gray-400 sm:text-base">
+
             <li>
-              <Link to={"/home"} className="hover:text-white cursor-pointer">
+              <Link
+                to="/home"
+                className="transition hover:text-white"
+              >
                 Home
               </Link>
             </li>
 
             <li>
               <Link
-                to={"/myrentals"}
-                className="hover:text-white cursor-pointer"
+                to="/myrentals"
+                className="transition hover:text-white"
               >
                 My Rents
               </Link>
             </li>
 
             <li>
-              <Link to={"/about"} className="hover:text-white cursor-pointer">
+              <Link
+                to="/about"
+                className="transition hover:text-white"
+              >
                 About Us
               </Link>
             </li>
 
-            <li>
-              <Link to={"/contact"} className="hover:text-white cursor-pointer">
-                Contact
-              </Link>
-            </li>
+
           </ul>
         </div>
 
         {/* Services */}
         <div>
-          <h2 className="text-2xl font-semibold mb-5">Our Services</h2>
+          <h2 className="mb-4 text-xl font-semibold sm:mb-5 sm:text-2xl">
+            Our Services
+          </h2>
 
-          <ul className="space-y-3 text-gray-400">
+          <ul className="space-y-3 text-sm text-gray-400 sm:text-base">
             <li>Luxury Cars</li>
             <li>Economy Cars</li>
             <li>SUV Rentals</li>
@@ -104,32 +126,52 @@ export default function Footer() {
 
         {/* Contact */}
         <div>
-          <h2 className="text-2xl font-semibold mb-5">Contact</h2>
+          <h2 className="mb-4 text-xl font-semibold sm:mb-5 sm:text-2xl">
+            Contact
+          </h2>
 
-          <div className="space-y-5 text-gray-400">
-            <div className="flex items-center gap-3">
-              <FaPhoneAlt className="text-sky-500" />
-              <span>+91 98765 43210</span>
-            </div>
+          <div className="space-y-4 text-sm text-gray-400 sm:space-y-5 sm:text-base">
 
-            <div className="flex items-center gap-3">
-              <FaEnvelope className="text-sky-500" />
-              <span>support@imperialcars.com</span>
-            </div>
-
+            {/* Phone */}
             <div className="flex items-start gap-3">
-              <FaMapMarkerAlt className="text-sky-500 mt-1" />
-              <span>Kollam, Kerala, India</span>
+              <FaPhoneAlt className="mt-1 shrink-0 text-sky-500" />
+
+              <span className="break-words">
+                +91 98765 43210
+              </span>
             </div>
+
+            {/* Email */}
+            <div className="flex items-start gap-3">
+              <FaEnvelope className="mt-1 shrink-0 text-sky-500" />
+
+              <span className="break-all">
+                support@imperialcars.com
+              </span>
+            </div>
+
+            {/* Location */}
+            <div className="flex items-start gap-3">
+              <FaMapMarkerAlt className="mt-1 shrink-0 text-sky-500" />
+
+              <span>
+                Kollam, Kerala, India
+              </span>
+            </div>
+
           </div>
         </div>
+
       </div>
 
+      {/* Divider */}
       <hr className="border-slate-700" />
 
-      <div className="text-center py-6 text-gray-400 text-sm">
+      {/* Copyright */}
+      <div className="px-4 py-5 text-center text-xs text-gray-400 sm:py-6 sm:text-sm">
         © {new Date().getFullYear()} Imperial Car Rental. All Rights Reserved.
       </div>
+
     </footer>
   );
 }

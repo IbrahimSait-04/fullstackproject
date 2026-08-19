@@ -30,12 +30,14 @@ export default function CarList({ setSelectedCar }) {
           authorization: `Bearer ${adminToken}`,
         },
       });
+
       fetchCars();
-      return alert("Deleted Sucessfully");
+      return alert("Deleted Successfully");
     } catch (error) {
       if (error.response && error.response.status === 400) {
         alert("Ongoing Rental Cant Be Deleted");
       }
+
       console.log(error);
     }
   };
@@ -46,21 +48,24 @@ export default function CarList({ setSelectedCar }) {
 
     const diff = expiry - today;
 
-    const daysLeft = Math.ceil(diff / (1000 * 60 * 60 * 24));
+    const daysLeft = Math.ceil(
+      diff / (1000 * 60 * 60 * 24)
+    );
 
     if (daysLeft < 0) {
       return {
         status: "Expired",
-        message: `Pucc Expired ${Math.abs(daysLeft)} days ago`,
+        message: `PUC Expired ${Math.abs(daysLeft)} days ago`,
       };
     }
 
     if (daysLeft <= 10) {
       return {
         status: "Warning",
-        message: `PUC Expires in ${daysLeft} days `,
+        message: `PUC Expires in ${daysLeft} days`,
       };
     }
+
     return {
       status: "valid",
       message: `PUC valid for ${daysLeft} days`,
@@ -80,102 +85,153 @@ export default function CarList({ setSelectedCar }) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
-      <h1 className="text-3xl font-bold text-center mb-10">Available Cars</h1>
+    <section className="w-full overflow-x-hidden">
+      <div className="mx-auto max-w-7xl px-3 py-6 sm:px-5 sm:py-8 md:px-6 md:py-10">
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {car.map((c) => {
-          const pucStatus = getPucStatus(c.puc);
+        {/* Heading */}
+        <h1 className="mb-6 text-center text-2xl font-bold text-gray-800 sm:mb-8 sm:text-3xl md:mb-10">
+          Available Cars
+        </h1>
 
-          return (
-            <div
-              key={c._id}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition duration-300 flex flex-col"
-            >
-              {/* Car Image */}
-              <img
-                src={c.img}
-                alt={c.carName}
-                className="w-full h-56 object-cover"
-              />
+        {/* Cars Grid */}
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3 lg:gap-8">
 
-              {/* Card Content */}
-              <div className="p-6 flex flex-col flex-1">
-                {/* Car Name */}
-                <h2 className="text-2xl font-bold text-gray-800 mb-3">
-                  {c.carName}
-                </h2>
+          {car.map((c) => {
+            const pucStatus = getPucStatus(c.puc);
 
-                {/* Price */}
-                <p className="text-green-600 text-lg font-bold mb-4">
-                  ₹{c.carPrice} / Day
-                </p>
+            return (
+              <div
+                key={c._id}
+                className="
+                  flex
+                  flex-col
+                  overflow-hidden
+                  rounded-2xl
+                  bg-white
+                  shadow-lg
+                  transition
+                  duration-300
+                  hover:-translate-y-1
+                  hover:shadow-2xl
+                  md:hover:-translate-y-2
+                "
+              >
 
-                {/* Description */}
-                <p className="text-gray-600 leading-relaxed mb-5">
-                  {c.description}
-                </p>
+                {/* Car Image */}
+                <img
+                  src={c.img}
+                  alt={c.carName}
+                  className="h-48 w-full object-cover sm:h-52 md:h-56"
+                />
 
-                {/* Vehicle Details */}
-                <div className="border-t border-gray-200 pt-4 space-y-3">
-                  <p className="text-sm text-gray-600">
-                    <span className="font-semibold text-gray-800">
-                      Registration:
-                    </span>{" "}
-                    {c.regNo}
+                {/* Card Content */}
+                <div className="flex flex-1 flex-col p-4 sm:p-5 md:p-6">
+
+                  {/* Car Name */}
+                  <h2 className="mb-2 break-words text-xl font-bold text-gray-800 sm:text-2xl">
+                    {c.carName}
+                  </h2>
+
+                  {/* Price */}
+                  <p className="mb-4 text-base font-bold text-green-600 sm:text-lg">
+                    ₹{c.carPrice} / Day
                   </p>
 
-                  <p className="text-sm text-gray-600">
-                    <span className="font-semibold text-gray-800">
-                      RC Validity:
-                    </span>{" "}
-                    {formatDate(c.rc)}
+                  {/* Description */}
+                  <p className="mb-5 break-words text-sm leading-relaxed text-gray-600 sm:text-base">
+                    {c.description}
                   </p>
 
-                  <p className="text-sm text-gray-600">
-                    <span className="font-semibold text-gray-800">
-                      PUC Validity:
-                    </span>{" "}
-                    {formatDate(c.puc)}
-                  </p>
-                </div>
+                  {/* Vehicle Details */}
+                  <div className="space-y-3 border-t border-gray-200 pt-4">
 
-                {/* PUC Warning */}
-                <div className="mt-4 min-h-[56px]">
-                  {pucStatus.status === "Expired" && (
-                    <div className="p-3 rounded-xl bg-red-100 text-red-700 font-semibold text-sm">
-                      {pucStatus.message}
-                    </div>
-                  )}
+                    <p className="break-words text-sm text-gray-600">
+                      <span className="font-semibold text-gray-800">
+                        Registration:
+                      </span>{" "}
+                      {c.regNo}
+                    </p>
 
-                  {pucStatus.status === "Warning" && (
-                    <div className="p-3 rounded-xl bg-yellow-100 text-yellow-700 font-semibold text-sm">
-                      {pucStatus.message}
-                    </div>
-                  )}
-                </div>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-semibold text-gray-800">
+                        RC Validity:
+                      </span>{" "}
+                      {formatDate(c.rc)}
+                    </p>
 
-                {/* Buttons */}
-                <div className="flex justify-between items-center mt-auto pt-5">
-                  <button
-                    onClick={() => setSelectedCar(c)}
-                    className="bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-2.5 rounded-lg font-semibold transition"
-                  >
-                    Edit
-                  </button>
+                    <p className="text-sm text-gray-600">
+                      <span className="font-semibold text-gray-800">
+                        PUC Validity:
+                      </span>{" "}
+                      {formatDate(c.puc)}
+                    </p>
 
-                  <button
-                    onClick={() => handleDelete(c._id)}
-                    className="bg-red-500 hover:bg-red-600 text-white px-6 py-2.5 rounded-lg font-semibold transition"
-                  >
-                    Delete
-                  </button>
+                  </div>
+
+                  {/* PUC Warning */}
+                  <div className="mt-4 min-h-[56px]">
+
+                    {pucStatus.status === "Expired" && (
+                      <div className="rounded-xl bg-red-100 p-3 text-sm font-semibold text-red-700">
+                        {pucStatus.message}
+                      </div>
+                    )}
+
+                    {pucStatus.status === "Warning" && (
+                      <div className="rounded-xl bg-yellow-100 p-3 text-sm font-semibold text-yellow-700">
+                        {pucStatus.message}
+                      </div>
+                    )}
+
+                  </div>
+
+                  {/* Buttons */}
+                  <div className="mt-auto flex flex-col gap-3 pt-5 sm:flex-row sm:items-center sm:justify-between">
+
+                    <button
+                      onClick={() => setSelectedCar(c)}
+                      className="
+                        w-full
+                        rounded-lg
+                        bg-yellow-500
+                        px-6
+                        py-2.5
+                        font-semibold
+                        text-white
+                        transition
+                        hover:bg-yellow-600
+                        sm:w-auto
+                      "
+                    >
+                      Edit
+                    </button>
+
+                    <button
+                      onClick={() => handleDelete(c._id)}
+                      className="
+                        w-full
+                        rounded-lg
+                        bg-red-500
+                        px-6
+                        py-2.5
+                        font-semibold
+                        text-white
+                        transition
+                        hover:bg-red-600
+                        sm:w-auto
+                      "
+                    >
+                      Delete
+                    </button>
+
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
