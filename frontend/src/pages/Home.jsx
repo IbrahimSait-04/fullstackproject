@@ -261,7 +261,7 @@ export default function Home() {
             sm:p-6
             md:p-8
           "
-          style={{ bottom: "-150px" }}
+          style={{ bottom: "-40px" }}
         >
           <div className="grid grid-cols-1 items-end gap-4 md:grid-cols-3 md:gap-6">
             {/* Pickup */}
